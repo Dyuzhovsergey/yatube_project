@@ -2,17 +2,21 @@
 <!DOCTYPE html> 
 <html lang="ru">          
   <head>
+    {% include 'includes/head.html' %}
     {% block title %}
-    Заголоок не подвезли :(
+    Название вкладки не подвезли :(
     {% endblock %}       
   </head>
   <body>       
     <header>
       {% include 'includes/header.html' %}
+      {% block header %}
+     <!--  Заголовок страницы не подвезли :(-->
+      {% endblock %} 
     </header>
     <main>
       {% block content %}
-        Контент не подвезли :(
+        Контент страницы не подвезли :(
       {% endblock %}
     </main>
     <footer>

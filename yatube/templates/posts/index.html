@@ -1,58 +1,59 @@
-<!DOCTYPE html> <!-- Используется html 5 версии -->
-<html lang="ru"> <!-- Язык сайта - русский -->
+<!-- templates/posts/index.html Главная страница-->
 {% extends 'base.html' %}
-{% load static %} 
-  <head>
-{% block title %}
-<meta charset="utf-8"> <!-- Кодировка сайта -->
-    <!-- Сайт готов работать с мобильными устройствами -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Загружаем фав-иконки -->
-    <link rel="icon" href="{% static 'img/fav/fav.ico' %}" type="image">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
-    <meta name="msapplication-TileColor" content="#000"> 
-    <meta name="theme-color" content="#ffffff">
-    <!-- Подключен файл со стандартными стилями бустрап -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
+  {% block title %}
     <title>{{ title_index  }}</title>
-    {% endblock %} 
-  </head>
-  <body>
-    <header>
-      
-    </header>
-    <main>
-      {% block content %}
-      {% for post in posts %}
-  <ul>
-    <li>
-      Автор: {{ post.author.get_full_name }}
-    </li>
-    <li>
-      Дата публикации: {{ post.pub_date|date:"d E Y" }}
-    </li>
-  </ul>
-  <p>{{ post.text }}</p>    
-  <a href="">все записи группы</a>
-  {% if not forloop.last %}<hr>{% endif %}
-{% endfor %}
-      {% endblock %} 
-        
-    </main>
-    <!-- Использованы классы бустрапа: -->
-    <!-- border-top: создаёт тонкую линию сверху блока -->
-    <!-- text-center: выравнивает текстовые блоки внутри блока по центру -->
-    <!-- py-3: контент внутри размещается с отступом сверху и снизу -->         
-    <footer class="page-footer font-small blue border-top">
-      {% block footer %}
-      <div class="footer-copyright text-center py-3">© 2025 Copyright 
-        <p><span style="color:red">Ya</span>tube</p> 
+  {% endblock %} 
+
+  {% block header %}
+    <div class="container py-4">
+      <h2>Последние обновления на сайте</h2>
+    </div>
+  {% endblock %}
+
+    {% block content %}
+      <div class="container py-1">      
+        {% for post in page_obj %}
+        <ul>
+          <li>
+            Автор: {{ post.author.get_full_name }}
+            <p>
+              <a href="{% url 'posts:profile' post.author %}">
+                Все посты пользователя
+              </a>
+          </p>
+          </li>
+          <li>
+            Дата публикации: {{ post.pub_date|date:"d E Y" }} г.
+          </li>
+          <li>
+            {% if post.group %}
+              Группа: {{ post.group.title }}
+            {% else %}
+              Группа: Нет группы
+            {% endif %}
+          </li>
+          <li>
+            Номера поста: {{ post.id}}
+          </li>
+        </ul>
+        <p>
+          <b>Текст поста:</b> {{ post.text }}
+        </p>
+        <p>
+          <a href="{% url 'posts:post_detail' post.id %}">
+            Подробная информация о посте
+          </a>
+          </p>
+           {% if post.group %}
+             <a href="{% url 'posts:group' post.group.slug %}">
+              Все записи группы: {{ post.group.title }}
+             </a>
+           {% endif %}
+             {% if not forloop.last %}<hr>{% endif %}
+          {% endfor %}
+
+              <p>Всего постов на сайте:</b> {{posts_all_count}}</p>
+
+         {% include 'posts/includes/paginator.html' %}
       </div>
-      {% endblock %}
-    </footer>
-  </body>
-</html>
-
-
+    {% endblock %} 

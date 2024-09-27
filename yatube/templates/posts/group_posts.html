@@ -1,0 +1,46 @@
+<!-- templates/posts/group_posts.html -->
+{% extends 'base.html' %}
+
+    {% block title %}       
+    <title>{{ name_page }}</title>
+    {% endblock %}
+
+    {% block content %}
+      <!-- класс py-5 создает отступы сверху и снизу блока -->
+      <div class="container py-5">
+        <h2>Список постов группы "{{group}}"</h2>
+        {% for post in page_obj %}
+              <div class="container py-1">
+              <ul>
+                <li>
+                  Автор:
+                  <a href="{% url 'posts:profile' post.author %}">
+                    {{ post.author.get_full_name }}
+                  </a> 
+                </li>
+                <li>
+                  Дата публикации:{{ post.pub_date|date:"d E Y" }}
+                </li>
+                <li>
+                {% if post.group %}
+                   <p>Группа: {{ post.group.title }}
+                   <a href="{% url 'posts:group_list' %}">Список  групп</a>
+                  </p>
+                {% else %}
+                    <p>Группа: Нет</p>
+                {% endif %}
+                </li>
+              </ul> 
+                <b>Текст поста:</b> {{ post.text.title }}
+                <p>
+                  <a href="{% url 'posts:post_detail' post.id %}">
+                    Подробная информация о посте
+                  </a>
+                </p>
+               {% if not forloop.last %}<hr>{% endif %}
+              </div>     
+             {% endfor %}
+        {% include 'posts/includes/paginator.html' %}
+      </div>
+      {% endblock %}
+

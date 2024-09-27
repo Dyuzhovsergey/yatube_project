@@ -1,0 +1,54 @@
+<!-- templates/posts/post_detail.html -->
+{% extends 'base.html' %} 
+
+{% block title %}
+<title>Пост: {{title}} </title>
+{% endblock %} 
+
+{% block content %}
+<div class="container py-5">  
+  <aside class="col-12 col-md-6">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <b>Автор:</b> {{ post.author.get_full_name }}
+      </li>
+      <li class="list-group-item">
+        <b>Всего постов автора:</b> {{number}}
+        <p><a href="{% url 'posts:profile' post.author %}">
+          Все посты пользователя
+        </a>
+      </p>
+      </li>
+      <li class="list-group-item">
+        <b>Дата публикации:</b> {{ post.pub_date|date:"d E Y" }} г.
+      </li>
+      <li class="list-group-item">
+        <b>Номер поста на сайте:</b> {{ post.id }}
+      </li>
+      {% if post.group %}   
+      <li class="list-group-item">
+        <b>Группа:</b> {{ post.group.title}}
+        <p>
+          <a href="{% url 'posts:group' post.group.slug %}">
+            Все записи группы
+          </a>
+      </li>
+      {% else %}
+      <li class="list-group-item">
+        <b>Группа:</b> Нет группы
+      {% endif %}
+      </li>
+        </p>
+    </ul>
+  </aside>
+  <article class="col-12 col-md-9">
+    <p>
+      <b>Текст поста:</b> {{post.text}}
+    </p>
+      <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}">
+        Редактировать запись
+      </a>  
+    </button>
+  </article>
+</div> 
+{% endblock %}
