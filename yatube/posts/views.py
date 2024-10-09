@@ -9,7 +9,6 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.decorators import login_required
 
-@login_required
 def index(request):
     template = 'posts/index.html'
     title_index = " Главная страница"
@@ -49,10 +48,6 @@ def group_list(request):
 def group_posts(request, slug):
     template = 'posts/group_posts.html'
     name_page = "Список постов"
-    # Функция get_object_or_404 получает по заданным критериям объект 
-    # из базы данных или возвращает сообщение об ошибке, если объект не найден.
-    # В нашем случае в переменную group будут переданы объекты модели Group,
-    # поле slug у которых соответствует значению slug в запросе
     group = get_object_or_404(Group, slug=slug)    
  
     # Метод .filter позволяет ограничить поиск по критериям.

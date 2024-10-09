@@ -43,7 +43,7 @@
           <a href="{% url 'posts:post_detail' post.id %}">
             Подробная информация о посте
           </a>
-          </p>
+        </p>
            {% if post.group %}
              <a href="{% url 'posts:group' post.group.slug %}">
               Все записи группы: {{ post.group.title }}
@@ -51,9 +51,7 @@
            {% endif %}
              {% if not forloop.last %}<hr>{% endif %}
           {% endfor %}
-
-              <p>Всего постов на сайте:</b> {{posts_all_count}}</p>
-
+          <p>Всего постов на сайте:</b> {{posts_all_count}}</p>
          {% include 'posts/includes/paginator.html' %}
       </div>
     {% endblock %} 

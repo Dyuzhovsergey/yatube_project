@@ -15,19 +15,3 @@ class PostForm(forms.ModelForm):
             'group': forms.Select(attrs={'class': 'form-control', }),
         }  
         
-        
-class PostEditForm(forms.ModelForm):
-    class Meta():
-        # укажем модель, с которой связана создаваемая форма
-        model = Post
-        # укажем, какие поля должны быть видны в форме и в каком порядке
-        fields = ('text', 'group', )
-        
-        widgets = {
-            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите текст'}),
-            'group': forms.Select(attrs={'class': 'form-control', }),
-        }           
-        
-                
-    
-        
