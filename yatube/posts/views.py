@@ -9,12 +9,14 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.decorators import login_required
 
+User = get_user_model()
+
 def index(request):
     template = 'posts/index.html'
-    title_index = " Главная страница"
+    title_index = "Главная страница"
     post_list = Post.objects.order_by('-pub_date')[:20]
     
-    posts_all_count = Post.objects.count
+    posts_all_count = Post.objects.count()
     
     # Показывать по 10 записей на странице.
     paginator = Paginator(post_list, 10) 
@@ -27,13 +29,12 @@ def index(request):
     
     context = {
         'posts_all_count' : posts_all_count,
-        'page_number' : page_number,
         'page_obj': page_obj,
         'title_index' : title_index,        
     }
     return render(request, template, context)  
 
-@login_required
+
 def group_list(request):
     template = 'posts/group_list.html'
     title = "Список групп"
@@ -44,10 +45,10 @@ def group_list(request):
     }
     return render(request, template, context)
 
-@login_required
+
 def group_posts(request, slug):
     template = 'posts/group_posts.html'
-    name_page = "Список постов"
+    title = "Список постов в группе"
     group = get_object_or_404(Group, slug=slug)    
  
     # Метод .filter позволяет ограничить поиск по критериям.
@@ -61,14 +62,13 @@ def group_posts(request, slug):
     
     context = {
         'page_obj': page_obj,  
-        'name_page': name_page,
+        'title': title,
         'group': group,
     }
     return render(request, template, context)
 
-User = get_user_model()
 
-@login_required
+
 def profile(request, username):
     # Здесь код запроса к модели и создание словаря контекста
     template = 'posts/profile.html'
@@ -90,7 +90,6 @@ def profile(request, username):
     }
     return render(request, template, context)
 
-@login_required
 def post_detail(request, post_id):
     
     template = 'posts/post_detail.html'
@@ -98,7 +97,7 @@ def post_detail(request, post_id):
 
     title = post.text[:30]
     
-    number = Post.objects.filter(author=post.author).count
+    number = Post.objects.filter(author=post.author).count()
 
     context = {
         'number':number,
@@ -112,7 +111,7 @@ def post_create(request):
     template = 'posts/post_create.html'
     
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, files=request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -129,11 +128,11 @@ def post_edit(request, post_id):
     template = 'posts/post_create.html'
         
     post = get_object_or_404(Post, id=post_id)
-    if request.user != post.author:
+    if post.author != request.user:
         return redirect('posts:post_detail', post_id=post.id)
    
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST , files=request.FILES or None, instance=post)
 
         if form.is_valid():
             form.save()
