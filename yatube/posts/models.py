@@ -23,7 +23,7 @@ class Post(models.Model):
     text = models.TextField(verbose_name="Полный текст поста",
                             help_text='Введите текст поста')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации",
-                                    help_text='Дата, в которую опубликован поост')
+                                    help_text='Дата, в которую опубликован пост')
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -44,11 +44,41 @@ class Post(models.Model):
         upload_to='posts/',
         blank=True
     )
-
     class Meta:
         ordering = ('-pub_date',)
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+    
+    
+class Comment(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name="Пост",
+        help_text="Пост, к которому относится комментарий"
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name="Автор",
+        help_text="Автор комментария"
+    )
+    text = models.TextField(
+        verbose_name="Текст комментария",
+        help_text="Введите текст комментария"
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата публикации",
+        help_text="Дата и время публикации комментария"
+    )
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = 'Коментарий'
+        verbose_name_plural = 'Коментарии'
         
     def __str__(self):
         return self.text[:15] 
