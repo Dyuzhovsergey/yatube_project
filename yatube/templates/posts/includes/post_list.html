@@ -1,13 +1,10 @@
 {% load thumbnail %}
+{% load cache %}
+{% cache 20 index_page post.id %}
 
 <ul>
     <li>
       Автор: {{ post.author.get_full_name }}
-      <p>
-        <a href="{% url 'posts:profile' post.author %}">
-          Все посты пользователя
-        </a>
-    </p>
     </li>
     <li>
       Дата публикации: {{ post.pub_date|date:"d E Y" }} г.
@@ -20,7 +17,7 @@
       {% endif %}
     </li>
     <li>
-      Номера поста: {{ post.id}}
+      Номер поста: {{ post.id }}
     </li>
   </ul>
 
@@ -36,3 +33,11 @@
       Подробная информация о посте
     </a>
   </p>
+
+  {% if post.group %}
+    <a href="{% url 'posts:group' post.group.slug %}">
+      Все записи группы: {{ post.group.title }}
+    </a>
+  {% endif %}
+
+{% endcache %}

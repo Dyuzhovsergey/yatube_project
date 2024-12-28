@@ -1,15 +1,15 @@
-<!-- templates/posts/index.html Главная страница-->
+<!-- templates/posts/follow.html Страница постов автора, на которого ты подписан-->
 {% extends 'base.html' %}
 
 {% load thumbnail %}
 
   {% block title %}
-    <title>{{ title_index  }}</title>
+    <title>{{ title_follow }}</title>
   {% endblock %} 
 
   {% block header %}
     <div class="container py-4">
-      <h2>Последние обновления на сайте</h2>
+      <h2>Посты автора, на которого вы подписались</h2>
     </div>
   {% endblock %}
 
@@ -20,7 +20,6 @@
         {% include 'posts/includes/post_list.html' %}
              {% if not forloop.last %}<hr>{% endif %}
         {% endfor %}
-          <p>Всего постов на сайте:</b> {{posts_all_count}}</p>
         {% include 'posts/includes/paginator.html' %}
     </div>
   {% endblock %} 

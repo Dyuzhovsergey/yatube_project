@@ -7,20 +7,23 @@
 <title>Пост: {{title}} </title>
 {% endblock %} 
 
+{% block header %}
+<div class="container py-4">
+  <h2>Подробная информация о посте<h2>
+</div>
+{% endblock %}
+
+
 {% block content %}
-<div class="container py-5">
+<div class="container py-1">
   <div class="row">  
-    <aside class="col-12 col-md-3">
+    <aside class="col-12 col-md-6">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <b>Автор:</b> {{ post.author.get_full_name }}
         </li>
         <li class="list-group-item">
           <b>Всего постов автора:</b> {{number}}
-          <p><a href="{% url 'posts:profile' post.author %}">
-            Все посты пользователя
-          </a>
-          </p>
         </li>
         <li class="list-group-item">
           <b>Дата публикации:</b> {{ post.pub_date|date:"d E Y" }} г.
@@ -49,18 +52,22 @@
       <img class="card-img my-2" src="{{ im.url }}">
     {% endthumbnail %}
     
-    <article class="col-12 col-md-6">
+    <div class="container py-1">
       <p>
         <b>Текст поста:</b> {{post.text}}
+      </p>
+      <p><a href="{% url 'posts:profile' post.author %}">
+        Все посты пользователя
+      </a>
       </p>
         <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}">
           Редактировать запись
         </a>  
-    </article>
+    </div>
 
 
     {% load user_filters %}
-
+    <div class="container py-1">
     {% if user.is_authenticated %}
       <div class="card my-4">
         <h5 class="card-header">Добавить комментарий:</h5>

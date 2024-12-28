@@ -14,6 +14,10 @@ class Group(models.Model):
         unique=True,
         verbose_name='Уникальный адрес группы')
     description = models.TextField(verbose_name='Описание сообщества')
+    
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
 
     def __str__(self):
         return self.title
@@ -48,6 +52,9 @@ class Post(models.Model):
         ordering = ('-pub_date',)
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+        
+    def __str__(self):
+        return self.text[:15] 
     
     
 class Comment(models.Model):
@@ -85,4 +92,28 @@ class Comment(models.Model):
     
 
     
+class Follow(models.Model):
+    # объект пользователя, который подписывается
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower',
+        verbose_name="Подписчик",
+        help_text="Подписчик на автора"
+    )
+    # объект пользователя, на которого подписываются
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+        verbose_name = "Автор",
+        help_text='Автора поста'
+    )
 
+    # class Meta:
+    #     ordering = ('-created',)
+    #     verbose_name = 'Подписка'
+    #     verbose_name_plural = 'Подписки'
+        
+    # def __str__(self):
+    #     return self.text[:15] 
