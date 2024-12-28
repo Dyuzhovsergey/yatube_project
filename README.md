@@ -17,7 +17,7 @@ python3 -m venv env_yatube
 ```
 
 ```
-source env/bin/activate
+source env_yatube/bin/activate
 ```
 
 Установить зависимости из файла requirements.txt:
