@@ -23,7 +23,7 @@ source env_yatube/bin/activate
 Установить зависимости из файла requirements.txt:
 
 ```
-python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade pip setuptools
 ```
 
 ```
